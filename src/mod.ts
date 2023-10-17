@@ -4,6 +4,7 @@ export function Collection<K extends defined, V extends defined>(): Collection<K
 	const _Map: Map<K, V> = new Map<K, V>();
 	const _Events: CollectionEvents<K, V> = {
 		OnAdd: EventModule<V>(),
+		OnDestroy: EventModule<Map<K, V>>(),
 		OnRemove: EventModule<V>(),
 	};
 
@@ -54,6 +55,17 @@ export function Collection<K extends defined, V extends defined>(): Collection<K
         // Removes the entry with the specified key from the collection.
 		Delete(key: K): boolean {
 			return _Map.delete(key);
+		},
+
+		// Deconstructor marking the object as destroyed. This will fire the OnDestroy event.
+		Destroy(): void {
+			_Events.OnDestroy.Fire(_Map);
+
+			for (const _Event in _Events) {
+				(_Events as unknown as {[key: string]: EventModule<any>})[_Event].Destroy();
+			}
+            
+			_Map.clear();
 		},
 
         // Returns a new collection containing entries not present in the provided collection.
@@ -462,6 +474,7 @@ export declare type Comparator<K, V> = (a: [K, V], b: [K, V]) => boolean;
 
 export interface CollectionEvents<K, V> {
 	OnAdd: EventModule<V>;
+	OnDestroy: EventModule<Map<K, V>>;
 	OnRemove: EventModule<V>;
 }
 
@@ -474,6 +487,7 @@ export interface CollectionMethods<K, V> extends CollectionEvents<K, V> {
 	Clone(): Collection<K, V>;
 	Concat(...collections: Collection<K, V>[]): Collection<K, V>;
 	Delete(key: K): boolean;
+	Destroy(): void;
 	Difference(collection: Collection<K, V>): Collection<K, V>;
 	Each(fn: (value: V, key: K) => void): Collection<K, V>;
 	Ensure(key: K, defaultValue: V): V;
