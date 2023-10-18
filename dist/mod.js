@@ -6,6 +6,7 @@ function Collection() {
     const _Map = new Map();
     const _Events = {
         OnAdd: (0, event_1.EventModule)(),
+        OnDestroy: (0, event_1.EventModule)(),
         OnRemove: (0, event_1.EventModule)(),
     };
     const state = {};
@@ -49,6 +50,14 @@ function Collection() {
         // Removes the entry with the specified key from the collection.
         Delete(key) {
             return _Map.delete(key);
+        },
+        // Deconstructor marking the object as destroyed. This will fire the OnDestroy event.
+        Destroy() {
+            _Events.OnDestroy.Fire(_Map);
+            for (const _Event in _Events) {
+                _Events[_Event].Destroy();
+            }
+            _Map.clear();
         },
         // Returns a new collection containing entries not present in the provided collection.
         Difference(collection) {

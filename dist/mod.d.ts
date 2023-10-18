@@ -1,4 +1,5 @@
 /// <reference types="@rbxts/compiler-types" />
+/// <reference types="@rbxts/compiler-types" />
 import { EventModule } from "@rbxgar/event";
 export declare function Collection<K extends defined, V extends defined>(): Collection<K, V>;
 export declare type Collection<K, V> = CollectionMethods<K, V> & CollectionParams<K, V>;
@@ -11,6 +12,7 @@ export declare type Keep<V> = {
 export declare type Comparator<K, V> = (a: [K, V], b: [K, V]) => boolean;
 export interface CollectionEvents<K, V> {
     OnAdd: EventModule<V>;
+    OnDestroy: EventModule<Map<K, V>>;
     OnRemove: EventModule<V>;
 }
 export interface CollectionParams<K, V> {
@@ -22,6 +24,7 @@ export interface CollectionMethods<K, V> extends CollectionEvents<K, V> {
     Clone(): Collection<K, V>;
     Concat(...collections: Collection<K, V>[]): Collection<K, V>;
     Delete(key: K): boolean;
+    Destroy(): void;
     Difference(collection: Collection<K, V>): Collection<K, V>;
     Each(fn: (value: V, key: K) => void): Collection<K, V>;
     Ensure(key: K, defaultValue: V): V;
