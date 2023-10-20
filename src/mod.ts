@@ -1,3 +1,4 @@
+import { BaseModule, DeclareModule } from "@rbxgar/basemodule";
 import { EventModule } from "@rbxgar/event";
 
 export function Collection<K extends defined, V extends defined>(): Collection<K, V> {
@@ -8,7 +9,9 @@ export function Collection<K extends defined, V extends defined>(): Collection<K
 		OnRemove: EventModule<V>(),
 	};
 
-	const state: CollectionParams<K, V> = {};
+	const state: CollectionParams<K, V> = {
+		IsDestroyed: false,
+	};
 
 	const methods = (state: CollectionParams<K, V>): CollectionMethods<K, V> => ({
 		// Converts the collection into an array of its values.
@@ -61,7 +64,7 @@ export function Collection<K extends defined, V extends defined>(): Collection<K
 		Destroy(): void {
 			_Events.OnDestroy.Fire(_Map);
 
-			for (const _Event in _Events) {
+			for (const [_Event] of pairs(_Events)) {
 				(_Events as unknown as {[key: string]: EventModule<any>})[_Event].Destroy();
 			}
             
@@ -89,7 +92,8 @@ export function Collection<K extends defined, V extends defined>(): Collection<K
 			_Map.forEach((value, key) => {
 				fn(value, key);
 			});
-			return { ...state, ...methods(state) };
+			const Module =  { ...state, ...methods(state), IsDestroyed: () => IsDestroyed(state) };
+			return DeclareModule(Module);
 		},
 
         // Ensures an entry with the specified key exists in the collection. If not, sets it with a default value.
@@ -444,8 +448,10 @@ export function Collection<K extends defined, V extends defined>(): Collection<K
 
         // Executes a function with the collection and returns the collection.
 		Tap(fn: (collection: Collection<K, V>) => void): Collection<K, V> {
-			fn({ ...state, ...methods(state) });
-			return { ...state, ...methods(state) };
+			const Module =  { ...state, ...methods(state), IsDestroyed: () => IsDestroyed(state) };
+			const Declared = DeclareModule(Module);
+			fn(Declared);
+			return Declared;
 		},
 
         // Converts the collection into an array of its values.
@@ -465,10 +471,13 @@ export function Collection<K extends defined, V extends defined>(): Collection<K
 		..._Events,
 	});
 
-	return { ...state, ...methods(state) };
+	const IsDestroyed = (state: CollectionParams<K, V>) => state.IsDestroyed;
+
+	const Module =  { ...state, ...methods(state), IsDestroyed: () => IsDestroyed(state) };
+	return DeclareModule(Module);
 }
 
-export declare type Collection<K, V> = CollectionMethods<K, V> & CollectionParams<K, V>;
+export declare type Collection<K, V> = CollectionMethods<K, V> & BaseModule;
 export declare type Keep<V> = { keep: false } | { keep: true; value: V };
 export declare type Comparator<K, V> = (a: [K, V], b: [K, V]) => boolean;
 
@@ -478,7 +487,9 @@ export interface CollectionEvents<K, V> {
 	OnRemove: EventModule<V>;
 }
 
-export interface CollectionParams<K, V> {}
+export interface CollectionParams<K, V> {
+	IsDestroyed: boolean;
+}
 
 export interface CollectionMethods<K, V> extends CollectionEvents<K, V> {
 	Array(): V[];

@@ -1,24 +1,26 @@
 {
   "compilerOptions": {
-    "incremental": true,                              /* Save .tsbuildinfo files to allow for incremental compilation of projects. */            /* Reduce the number of projects loaded automatically by TypeScript. */
-    "target": "ESNext",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */                 /* Emit ECMAScript-standard-compliant class fields. */
-    "moduleDetection": "force",                        /* Control what method is used to detect module-format JS files. */
-    "module": "commonjs",                                /* Specify what module code is generated. */                                  /* Allow multiple folders to be treated as one when resolving modules. */
-    "typeRoots": ["node_modules/@rbxts"],                                  /* Specify multiple folders that act like './node_modules/@types'. */
-    "declaration": true,                              /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
-    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-    "strict": true,                                      /* Enable all strict type-checking options. */
+    "incremental": true,                       
+    "target": "ESNext",                           
+    "moduleDetection": "force",                    
+    "module": "commonjs",                          
+    "typeRoots": ["node_modules/@rbxts", "node_modules/@rbxgar"],          
+    "declaration": true,                              
+    "esModuleInterop": true,                            
+    "forceConsistentCasingInFileNames": true,            
+    "strict": true,                                     
     "skipLibCheck": true,
+    "noLib": true,
     
     "allowSyntheticDefaultImports": true,
-		"downlevelIteration": true,
-		"jsx": "react",
-		"jsxFactory": "Roact.createElement",
-		"jsxFragmentFactory": "Roact.createFragment",
-		"moduleResolution": "Node",
-		"resolveJsonModule": true,
-		"experimentalDecorators": true,
-    "outDir": "dist"
+        "downlevelIteration": true,
+        "jsx": "react",
+        "jsxFactory": "Roact.createElement",
+        "jsxFragmentFactory": "Roact.createFragment",
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+    "outDir": "dist",
+    "rootDir": "src"
   }
-}
+}  

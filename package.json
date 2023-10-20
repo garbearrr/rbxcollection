@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && rbxtsc"
   },
   "author": "garbear",
   "license": "ISC",
@@ -25,6 +25,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@rbxgar/basemodule": "github:garbearrr/rbxbasemod#main",
     "@rbxgar/event": "github:garbearrr/rbxevent#main"
   }
 }

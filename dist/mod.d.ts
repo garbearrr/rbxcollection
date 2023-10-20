@@ -1,8 +1,9 @@
 /// <reference types="@rbxts/compiler-types" />
 /// <reference types="@rbxts/compiler-types" />
+import { BaseModule } from "@rbxgar/basemodule";
 import { EventModule } from "@rbxgar/event";
 export declare function Collection<K extends defined, V extends defined>(): Collection<K, V>;
-export declare type Collection<K, V> = CollectionMethods<K, V> & CollectionParams<K, V>;
+export declare type Collection<K, V> = CollectionMethods<K, V> & BaseModule;
 export declare type Keep<V> = {
     keep: false;
 } | {
@@ -16,6 +17,7 @@ export interface CollectionEvents<K, V> {
     OnRemove: EventModule<V>;
 }
 export interface CollectionParams<K, V> {
+    IsDestroyed: boolean;
 }
 export interface CollectionMethods<K, V> extends CollectionEvents<K, V> {
     Array(): V[];
