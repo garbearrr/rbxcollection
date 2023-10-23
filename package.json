@@ -2,13 +2,14 @@
   "name": "@rbxgar/collection",
   "version": "1.0.0",
   "description": "Discord.js RobloxTS Implementation",
-  "main": "dist/mod.js",
+  "main": "dist/mod.lua",
   "types": "dist/mod.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsc && rbxtsc"
+    "build": "rbxtsc",
+    "buildwatch": "rbxtsc -w"
   },
   "author": "garbear",
   "license": "ISC",
